@@ -21,9 +21,10 @@ public class Entrance {
                 new CNListPageProcessor(),
                 new CNDetailsPageProcessor()
         ));
-        Spider.create(provider)
+        Spider spider = Spider.create(provider)
                 .addUrl(startPage)
-                .thread(1)
-                .run();
+                .thread(1);
+        spider.addUrl("");
+        spider.start();
     }
 }
