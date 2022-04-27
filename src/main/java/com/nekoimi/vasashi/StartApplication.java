@@ -14,6 +14,7 @@ import java.net.Inet4Address;
 
 @Slf4j
 //@EnableQuartz
+//@EnableWebMagic
 //@EnableSecurityAccess
 @SpringBootApplication
 public class StartApplication {

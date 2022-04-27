@@ -1,0 +1,6 @@
+webmagic:
+  site:
+    sehuatang:
+      name: SeHuaTang
+      host: https://xzcfdfsafd.co
+      pool-size: 4
