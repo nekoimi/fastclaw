@@ -1,6 +1,6 @@
 package com.nekoimi.vasashi;
 
-import com.nekoimi.vasashi.framework.webmagic.IWebMagicRunner;
+import com.nekoimi.vasashi.framework.webmagic.runner.IWebMagicRunner;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,9 +16,10 @@ public class WebMagicSpiderTests {
 
     @Qualifier("seHuaTangRunner")
     @Autowired
-    private IWebMagicRunner webMagicRunner;
+    private IWebMagicRunner seHuaTangRunner;
 
     @Test
     void runTest1() {
+        seHuaTangRunner.start();
     }
 }

@@ -1,16 +1,17 @@
 package com.nekoimi.vasashi.framework.config;
 
 import com.nekoimi.vasashi.framework.config.properties.WebMagicProperties;
-import com.nekoimi.vasashi.framework.webmagic.IWebMagicRunner;
-import com.nekoimi.vasashi.framework.webmagic.OkHttp3ClientDownloader;
-import com.nekoimi.vasashi.framework.webmagic.RedisPoolDuplicateScheduler;
+import com.nekoimi.vasashi.framework.webmagic.runner.IWebMagicRunner;
+import com.nekoimi.vasashi.framework.webmagic.downloader.OkHttp3ClientDownloader;
 import com.nekoimi.vasashi.webmagic.sehuatang.SeHuaTangRunner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import us.codecraft.webmagic.downloader.Downloader;
-import us.codecraft.webmagic.pipeline.Pipeline;
+import us.codecraft.webmagic.scheduler.QueueScheduler;
 import us.codecraft.webmagic.scheduler.Scheduler;
+
+import java.util.Map;
 
 /**
  * <p>WebMagicConfiguration</p>
@@ -28,7 +29,8 @@ public class WebMagicConfiguration {
      */
     @Bean
     public Scheduler scheduler(RedisConnectionFactory connectionFactory) {
-        return RedisPoolDuplicateScheduler.of(connectionFactory);
+        // return RedisPoolDuplicateScheduler.of(connectionFactory);
+        return new QueueScheduler();
     }
 
     /**
@@ -44,8 +46,11 @@ public class WebMagicConfiguration {
     @Bean(name = "seHuaTangRunner")
     public IWebMagicRunner seHuaTangRunner(WebMagicProperties properties,
                                            Scheduler scheduler,
-                                           Downloader downloader,
-                                           Pipeline pipeline) {
-        return new SeHuaTangRunner(properties.getSite().get("sehuatang"), scheduler, downloader, pipeline);
+                                           Downloader downloader) {
+        return new SeHuaTangRunner(properties.getSite().get("sehuatang"), scheduler, downloader, (resultItems, task) -> {
+            log.debug("name: {}", task.getUUID());
+            Map<String, Object> map = resultItems.getAll();
+            map.forEach((k, v) -> log.debug("{} -> {}", k, v));
+        });
     }
 }

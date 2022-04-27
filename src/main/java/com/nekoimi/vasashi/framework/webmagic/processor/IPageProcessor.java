@@ -1,4 +1,4 @@
-package com.nekoimi.vasashi.framework.webmagic;
+package com.nekoimi.vasashi.framework.webmagic.processor;
 
 import us.codecraft.webmagic.Page;
 

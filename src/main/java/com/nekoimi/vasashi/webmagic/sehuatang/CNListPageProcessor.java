@@ -1,7 +1,8 @@
 package com.nekoimi.vasashi.webmagic.sehuatang;
 
-import com.nekoimi.vasashi.framework.webmagic.IPageProcessor;
-import com.nekoimi.vasashi.framework.webmagic.PageContext;
+import cn.hutool.core.util.StrUtil;
+import com.nekoimi.vasashi.framework.webmagic.processor.IPageProcessor;
+import com.nekoimi.vasashi.framework.webmagic.processor.PageContext;
 import lombok.extern.slf4j.Slf4j;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.selector.Html;
@@ -30,5 +31,11 @@ public class CNListPageProcessor implements IPageProcessor {
             log.debug("href: {}", href);
             page.addTargetRequest(context.getHost() + href);
         });
+        // next
+        String nextUrl = html.xpath("//*[@id=\"fd_page_bottom\"]/div/a[@class=\"nxt\"]/@href").get();
+        if (StrUtil.isNotEmpty(nextUrl)) {
+            log.debug("next: {}", nextUrl);
+            page.addTargetRequest(context.getHost() + nextUrl);
+        }
     }
 }

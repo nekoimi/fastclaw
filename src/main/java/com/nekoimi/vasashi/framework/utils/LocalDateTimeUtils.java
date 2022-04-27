@@ -53,4 +53,14 @@ public class LocalDateTimeUtils {
     public static String format(LocalDate dateTime, String formatter) {
         return DateTimeFormatter.ofPattern(formatter).format(dateTime);
     }
+
+    /**
+     * <p>解析日期时间</p>
+     *
+     * @param dateTime 日期时间字符串
+     * @return
+     */
+    public static LocalDateTime parse(String dateTime) {
+        return LocalDateTime.parse(dateTime, DateTimeConstants.DEFAULT_DATE_TIME_FORMATTER);
+    }
 }

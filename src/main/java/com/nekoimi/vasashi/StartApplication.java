@@ -1,6 +1,7 @@
 package com.nekoimi.vasashi;
 
 import cn.hutool.core.util.StrUtil;
+import com.nekoimi.vasashi.framework.annotations.EnableWebMagic;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
@@ -14,7 +15,7 @@ import java.net.Inet4Address;
 
 @Slf4j
 //@EnableQuartz
-//@EnableWebMagic
+@EnableWebMagic
 //@EnableSecurityAccess
 @SpringBootApplication
 public class StartApplication {

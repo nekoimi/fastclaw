@@ -1,4 +1,4 @@
-package com.nekoimi.vasashi.framework.webmagic;
+package com.nekoimi.vasashi.framework.webmagic.downloader;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -7,7 +7,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Site;
@@ -21,8 +20,8 @@ import java.io.IOException;
 import java.net.Proxy;
 import java.nio.charset.Charset;
 import java.time.Duration;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiConsumer;
 
 /**
  * <p>OkHttpClientDownloader</p>
@@ -67,11 +66,7 @@ public class OkHttp3ClientDownloader extends AbstractDownloader {
         String url = request.getUrl();
         log.debug("download: {}", url);
         Page page = Page.fail();
-        HttpMethod httpMethod = HttpMethod.resolve(request.getMethod().toUpperCase());
-        if (httpMethod == null) {
-            log.error("Http method resolve failed, use {} resolve!", request.getMethod());
-            return page;
-        }
+        String method = Optional.ofNullable(request.getMethod()).orElse("GET");
         try {
             okhttp3.Request.Builder requestBuilder = new okhttp3.Request.Builder();
             Site taskSite = task.getSite();
@@ -81,7 +76,7 @@ public class OkHttp3ClientDownloader extends AbstractDownloader {
             }
             okhttp3.Request httpRequest = requestBuilder
                     .url(request.getUrl())
-                    .method(request.getMethod(), null)
+                    .method(method, null)
                     .build();
             Response httpResponse = httpClient.newCall(httpRequest).execute();
             page = handleHttpResponse(request, task, httpResponse);
@@ -109,8 +104,8 @@ public class OkHttp3ClientDownloader extends AbstractDownloader {
     private void createHttpClient(int connectionPoolSize) {
         this.httpClient = new OkHttpClient.Builder()
                 .connectionPool(new ConnectionPool(connectionPoolSize, connectionPoolSize, TimeUnit.MINUTES))
-                .callTimeout(Duration.ofSeconds(10))
-                .connectTimeout(Duration.ofSeconds(10))
+                .callTimeout(Duration.ofSeconds(30))
+                .connectTimeout(Duration.ofSeconds(30))
                 .proxy(proxy)
                 .build();
     }

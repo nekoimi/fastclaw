@@ -1,9 +1,9 @@
 package com.nekoimi.vasashi.webmagic.sehuatang;
 
 import cn.hutool.core.collection.ListUtil;
-import com.nekoimi.vasashi.framework.config.properties.WebMagicProperties;
-import com.nekoimi.vasashi.framework.webmagic.IPageProcessor;
-import com.nekoimi.vasashi.framework.webmagic.WebMagicRunner;
+import com.nekoimi.vasashi.framework.webmagic.SiteProperties;
+import com.nekoimi.vasashi.framework.webmagic.processor.IPageProcessor;
+import com.nekoimi.vasashi.framework.webmagic.runner.WebMagicRunner;
 import us.codecraft.webmagic.downloader.Downloader;
 import us.codecraft.webmagic.pipeline.Pipeline;
 import us.codecraft.webmagic.scheduler.Scheduler;
@@ -17,21 +17,22 @@ import java.util.List;
  */
 public class SeHuaTangRunner extends WebMagicRunner {
 
-    public SeHuaTangRunner(WebMagicProperties.SiteProperties siteProperties,
+    public SeHuaTangRunner(SiteProperties siteProperties,
                            Scheduler scheduler, Downloader downloader, Pipeline pipeline) {
         super(siteProperties, scheduler, downloader, pipeline);
     }
 
     @Override
     protected List<String> startUrls() {
-        return List.of(host() + "/forum-103-1.html");
+        return List.of(host() + "forum-103-1.html");
     }
 
     @Override
     protected List<IPageProcessor> processors() {
         return ListUtil.of(
                 new CNListPageProcessor(),
-                new CNDetailsPageProcessor()
+                new CNDetailsPageProcessor(),
+                new DownloadTorrentFileProcessor()
         );
     }
 }

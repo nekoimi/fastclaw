@@ -1,4 +1,4 @@
-package com.nekoimi.vasashi.framework.webmagic;
+package com.nekoimi.vasashi.framework.webmagic.scheduler;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;

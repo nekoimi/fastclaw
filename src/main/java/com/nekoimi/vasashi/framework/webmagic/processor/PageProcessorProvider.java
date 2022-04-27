@@ -1,4 +1,4 @@
-package com.nekoimi.vasashi.framework.webmagic;
+package com.nekoimi.vasashi.framework.webmagic.processor;
 
 import cn.hutool.core.collection.ListUtil;
 import lombok.extern.slf4j.Slf4j;

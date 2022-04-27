@@ -1,6 +1,9 @@
-package com.nekoimi.vasashi.framework.webmagic;
+package com.nekoimi.vasashi.framework.webmagic.runner;
 
-import com.nekoimi.vasashi.framework.config.properties.WebMagicProperties;
+import com.nekoimi.vasashi.framework.webmagic.SiteProperties;
+import com.nekoimi.vasashi.framework.webmagic.processor.PageContext;
+import com.nekoimi.vasashi.framework.webmagic.processor.IPageProcessor;
+import com.nekoimi.vasashi.framework.webmagic.processor.PageProcessorProvider;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.downloader.Downloader;
@@ -17,14 +20,19 @@ import java.util.List;
  */
 public abstract class WebMagicRunner implements IWebMagicRunner {
     protected Spider spider;
-    protected WebMagicProperties.SiteProperties siteProperties;
+    protected SiteProperties siteProperties;
     protected final Scheduler scheduler;
     protected final Downloader downloader;
     protected final Pipeline pipeline;
 
-    public WebMagicRunner(WebMagicProperties.SiteProperties siteProperties,
+    public WebMagicRunner(SiteProperties siteProperties,
                           Scheduler scheduler, Downloader downloader, Pipeline pipeline) {
-        PageContext context = PageContext.of(host());
+        this.siteProperties = siteProperties != null ? siteProperties : new SiteProperties();
+        this.scheduler = scheduler;
+        this.downloader = downloader;
+        this.pipeline = pipeline;
+
+        PageContext context = PageContext.of(host(), siteProperties);
         PageProcessorProvider provider = PageProcessorProvider.of(context, site(), processors());
         this.spider = Spider.create(provider)
                 .setUUID(name())
@@ -35,11 +43,6 @@ public abstract class WebMagicRunner implements IWebMagicRunner {
                 .setExitWhenComplete(true)
                 .startUrls(startUrls())
                 .thread(threadNum());
-        this.siteProperties = siteProperties != null ? siteProperties :
-                new WebMagicProperties.SiteProperties("UNKNOW-NAME", "#", 1);
-        this.scheduler = scheduler;
-        this.downloader = downloader;
-        this.pipeline = pipeline;
     }
 
     @Override
@@ -65,7 +68,8 @@ public abstract class WebMagicRunner implements IWebMagicRunner {
                 // 设置重试次数
                 .setRetryTimes(3)
                 // 设置循环重试次数
-                .setCycleRetryTimes(3);
+                .setCycleRetryTimes(3)
+                .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36");
     }
 
     protected abstract List<String> startUrls();
