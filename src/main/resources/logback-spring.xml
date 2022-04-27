@@ -58,6 +58,7 @@
     <logger name="org.springframework.jmx" level="warn"/>
     <logger name="org.springframework.aop" level="warn"/>
     <logger name="org.springframework.ui" level="warn"/>
+    <logger name="org.springframework.test" level="warn"/>
     <logger name="org.hibernate.validator" level="warn"/>
     <logger name="org.jboss" level="warn"/>
     <logger name="org.eclipse.jetty" level="warn"/>
