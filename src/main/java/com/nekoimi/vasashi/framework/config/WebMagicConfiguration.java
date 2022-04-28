@@ -1,7 +1,7 @@
 package com.nekoimi.vasashi.framework.config;
 
 import com.nekoimi.vasashi.framework.config.properties.WebMagicProperties;
-import com.nekoimi.vasashi.framework.webmagic.runner.IWebMagicRunner;
+import com.nekoimi.vasashi.framework.webmagic.runner.WebMagicRunner;
 import com.nekoimi.vasashi.framework.webmagic.downloader.OkHttp3ClientDownloader;
 import com.nekoimi.vasashi.webmagic.sehuatang.SeHuaTangRunner;
 import lombok.extern.slf4j.Slf4j;
@@ -44,9 +44,9 @@ public class WebMagicConfiguration {
     }
 
     @Bean(name = "seHuaTangRunner")
-    public IWebMagicRunner seHuaTangRunner(WebMagicProperties properties,
-                                           Scheduler scheduler,
-                                           Downloader downloader) {
+    public WebMagicRunner seHuaTangRunner(WebMagicProperties properties,
+                                          Scheduler scheduler,
+                                          Downloader downloader) {
         return new SeHuaTangRunner(properties.getSite().get("sehuatang"), scheduler, downloader, (resultItems, task) -> {
             Map<String, Object> map = resultItems.getAll();
             map.forEach((k, v) -> log.debug("{} -> {}", k, v));

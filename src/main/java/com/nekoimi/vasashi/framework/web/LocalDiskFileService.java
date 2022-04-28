@@ -12,6 +12,7 @@ import com.nekoimi.vasashi.framework.utils.LocalDateTimeUtils;
 import com.nekoimi.vasashi.framework.utils.ResourceFileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -63,8 +64,18 @@ public class LocalDiskFileService implements FileService {
      * @return
      */
     private Mono<FileSaveInfo> createFileInfo(FilePart filePart, long contentLength) {
+        return createFileInfo(filePart.filename(), contentLength);
+    }
+
+    /**
+     * <p>创建文件信息</p>
+     *
+     * @param filename      文件名称
+     * @param contentLength 长度
+     * @return
+     */
+    private Mono<FileSaveInfo> createFileInfo(String filename, long contentLength) {
         String fileId = idGenerator.nextUUID(null);
-        String filename = filePart.filename();
         String extName = FileNameUtil.getSuffix(filename);
         String mimeType = FileUtil.getMimeType(filename);
         String relativePath = StrUtil.format("{}/{}.{}", createDateTimeDir(), fileId, extName);
@@ -82,13 +93,18 @@ public class LocalDiskFileService implements FileService {
         if (file == null) {
             return Mono.error(new RequestValidationException("文件不能为空"));
         }
+        return save(file.content(), file.filename(), contentLength);
+    }
 
-        return Mono.just(file).map(part -> Flux.from(part.content())
+    @Override
+    public Mono<FileSaveInfo> save(Flux<DataBuffer> dataBufferFlux, String filename, long contentLength) {
+        return Mono.fromCallable(() -> Flux.from(dataBufferFlux)
                 .flatMap(dataBuffer -> dataBuffer.readableByteCount() <= 0 ? Mono.error(new RequestValidationException("文件不能为空")) : Mono.just(dataBuffer)))
-                .flatMap(dataBufferFlux -> Mono.zip(createFileInfo(file, contentLength), Mono.just(dataBufferFlux)))
+                .flatMap(dataBuffer -> Mono.zip(createFileInfo(filename, contentLength), Mono.just(dataBufferFlux)))
                 .flatMap(tuple -> DataBufferUtils.write(tuple.getT2(),
                         FileUtil.newFile(properties.getLocalPath() + tuple.getT1().getRelativePath()).toPath())
-                        .then(Mono.just(tuple.getT1())));
+                        .then(Mono.just(tuple.getT1()))
+                );
     }
 
     @Override

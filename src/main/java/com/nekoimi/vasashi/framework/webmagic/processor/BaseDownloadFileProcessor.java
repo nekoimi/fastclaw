@@ -11,7 +11,7 @@ import us.codecraft.webmagic.Request;
  *
  * @author nekoimi 2022/4/27
  */
-public abstract class DownloadFileProcessor implements IPageProcessor {
+public abstract class BaseDownloadFileProcessor implements IPageProcessor {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -22,7 +22,7 @@ public abstract class DownloadFileProcessor implements IPageProcessor {
         String filename = dict.getStr("filename");
         byte[] fileBytes = page.getBytes();
         // save
-        save(context, filename, fileBytes, dict);
+        save(context, filename, fileBytes);
         // Ignore pipeline
         page.setSkip(true);
     }
@@ -33,7 +33,6 @@ public abstract class DownloadFileProcessor implements IPageProcessor {
      * @param context
      * @param filename
      * @param fileBytes
-     * @param extraInfo
      */
-    protected abstract void save(PageContext context, String filename, byte[] fileBytes, Dict extraInfo);
+    protected abstract void save(PageContext context, String filename, byte[] fileBytes);
 }

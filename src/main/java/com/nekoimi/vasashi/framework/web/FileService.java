@@ -1,7 +1,9 @@
 package com.nekoimi.vasashi.framework.web;
 
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
@@ -21,6 +23,16 @@ public interface FileService {
      * @return
      */
     Mono<FileSaveInfo> save(FilePart file, long contentLength);
+
+    /**
+     * <p>保存文件</p>
+     *
+     * @param dataBufferFlux 文件
+     * @param filename       文件名称
+     * @param contentLength  长度
+     * @return
+     */
+    Mono<FileSaveInfo> save(Flux<DataBuffer> dataBufferFlux, String filename, long contentLength);
 
     /**
      * <p>获取文件流</p>

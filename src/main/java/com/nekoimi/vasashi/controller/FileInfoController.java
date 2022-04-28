@@ -30,7 +30,7 @@ public class FileInfoController {
     @ApiOperation(value = "上传文件")
     public Mono<FileInfo> upload(@RequestPart("file") FilePart filePart,
                                  @RequestHeader(HttpHeaders.CONTENT_LENGTH) long contentLength) {
-        return fileInfoService.upload(filePart, contentLength);
+        return fileInfoService.uploadAndSave(filePart, contentLength);
     }
 
     @GetMapping("file/{fileId}")

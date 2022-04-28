@@ -6,6 +6,8 @@ import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import reactor.core.publisher.Mono;
 
+import java.io.InputStream;
+
 /**
  * FileInfo Service
  * <p>
@@ -20,7 +22,17 @@ public interface FileInfoService extends ReactiveICrudService<FileInfo> {
      * @param contentLength 数据长度
      * @return
      */
-    Mono<FileInfo> upload(FilePart filePart, long contentLength);
+    Mono<FileInfo> uploadAndSave(FilePart filePart, long contentLength);
+
+    /**
+     * <p>上传文件</p>
+     *
+     * @param bytes         字节数组
+     * @param filename      文件名称
+     * @param contentLength 数据长度
+     * @return
+     */
+    Mono<FileInfo> uploadAndSave(byte[] bytes, String filename, long contentLength);
 
     /**
      * <p>显示文件</p>

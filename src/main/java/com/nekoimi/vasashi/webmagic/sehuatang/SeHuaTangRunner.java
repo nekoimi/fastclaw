@@ -3,7 +3,7 @@ package com.nekoimi.vasashi.webmagic.sehuatang;
 import cn.hutool.core.collection.ListUtil;
 import com.nekoimi.vasashi.framework.webmagic.SiteProperties;
 import com.nekoimi.vasashi.framework.webmagic.processor.IPageProcessor;
-import com.nekoimi.vasashi.framework.webmagic.runner.WebMagicRunner;
+import com.nekoimi.vasashi.framework.webmagic.runner.BaseWebMagicRunner;
 import us.codecraft.webmagic.downloader.Downloader;
 import us.codecraft.webmagic.pipeline.Pipeline;
 import us.codecraft.webmagic.scheduler.Scheduler;
@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author nekoimi 2022/4/27
  */
-public class SeHuaTangRunner extends WebMagicRunner {
+public class SeHuaTangRunner extends BaseWebMagicRunner {
 
     public SeHuaTangRunner(SiteProperties siteProperties,
                            Scheduler scheduler, Downloader downloader, Pipeline pipeline) {
@@ -31,8 +31,7 @@ public class SeHuaTangRunner extends WebMagicRunner {
     protected List<IPageProcessor> processors() {
         return ListUtil.of(
                 new CNListPageProcessor(),
-                new CNDetailsPageProcessor(),
-                new DownloadTorrentFileProcessor()
+                new CNDetailsPageProcessor()
         );
     }
 }
