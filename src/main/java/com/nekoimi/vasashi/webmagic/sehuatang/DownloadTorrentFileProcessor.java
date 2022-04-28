@@ -11,7 +11,6 @@ import us.codecraft.webmagic.Page;
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * <p>DownloadFileProcessor</p>
