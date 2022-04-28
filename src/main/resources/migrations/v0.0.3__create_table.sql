@@ -52,7 +52,9 @@ CREATE TABLE IF NOT EXISTS book
     movie_number  varchar(255)            null default null,
     actress_id    varchar(32)             null default null,
     cover_url     varchar(255)            null default null,
-    cover_file_id varchar(32)             null default null
+    cover_file_id varchar(32)             null default null,
+    duration      varchar(32)             null default null,
+    manufacturer  varchar(255)            null default null
 );
 
 COMMENT ON TABLE book IS '书籍信息';
@@ -67,6 +69,8 @@ COMMENT ON COLUMN book.movie_number IS '书籍编号';
 COMMENT ON COLUMN book.actress_id IS '书籍作者ID';
 COMMENT ON COLUMN book.cover_url IS '书籍封面图URL';
 COMMENT ON COLUMN book.cover_file_id IS '书籍封面图ID';
+COMMENT ON COLUMN book.duration IS '书籍时长';
+COMMENT ON COLUMN book.manufacturer IS '书籍制造商';
 
 
 
@@ -102,7 +106,7 @@ CREATE TABLE IF NOT EXISTS book_magnet
     deleted    smallint                null,
 
     book_id    varchar(32)             null default null,
-    link       varchar(255)            null default null
+    link       text                    null default null
 );
 
 COMMENT ON TABLE book_magnet IS '书籍磁力链接';

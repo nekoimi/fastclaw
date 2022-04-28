@@ -81,7 +81,7 @@ public class CNDetailsPageProcessor implements IPageProcessor {
         });
         // 种子文件
         String torrentUrl = html.xpath("//p[@class=\"attnm\"]/a/@href").get();
-        page.putField("torrentUrl", torrentUrl);
+        page.putField("torrentUrl", List.of(torrentUrl));
 //        String torrentFilename = html.xpath("//p[@class=\"attnm\"]/a/text()").get();
 //        // 下载种子文件
 //        if (StrUtil.isNotEmpty(torrentUrl) && torrentUrl.startsWith("http")) {

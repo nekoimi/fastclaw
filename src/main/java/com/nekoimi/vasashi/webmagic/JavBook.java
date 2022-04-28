@@ -25,8 +25,11 @@ public class JavBook implements Serializable {
     private String originalUrl;
     private String movieNumber;
     private String actress;
+    private String series;
+    private String duration;
+    private String manufacturer;
     private String cover;
     private List<String> imageList;
     private List<String> magnetLink;
-    private String torrentUrl;
+    private List<String> torrentUrl;
 }
