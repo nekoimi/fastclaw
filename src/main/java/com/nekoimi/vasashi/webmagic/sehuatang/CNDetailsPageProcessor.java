@@ -14,6 +14,7 @@ import us.codecraft.webmagic.selector.Selectable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>CNDetailsPageProcessor</p>
@@ -59,33 +60,35 @@ public class CNDetailsPageProcessor implements IPageProcessor {
         String updateAtFormat = html.xpath("//*[@id=\"" + updateAtCssId + "\"]/span/@title").get();
         LocalDateTime updateAt = LocalDateTimeUtils.parse(updateAtFormat);
         page.putField("updateAt", updateAt);
+        page.putField("createdAt", updateAt);
         // 详细信息
         String id = html.regex("id=\"postmessage_(\\d+)\"").get();
         List<Selectable> selectableList = html.xpath(StrUtil.format("//*[@id=\"postmessage_{}\"]", id)).nodes();
         selectableList.forEach(selectable -> {
             // 演员
-            String performer = removeBlanks(selectable.regex("【出演女优】：(.*?)<br>").get());
-            page.putField("performer", performer);
+            String actress = removeBlanks(selectable.regex("【出演女优】：(.*?)<br>").get());
+            page.putField("actress", actress);
             // 封面图
             String cover = selectable.xpath("//img[1]/@zoomfile").get();
             page.putField("cover", cover);
             // 图片列表
-            List<String> imageList = selectable.xpath("//img/@zoomfile").all();
+            List<String> collectList = selectable.xpath("//img/@zoomfile").all();
+            List<String> imageList = collectList.stream().filter(url -> !cover.equalsIgnoreCase(url)).collect(Collectors.toList());
             page.putField("imageList", imageList);
             // 磁力链接
             String magnetCssId = selectable.regex("id=\"(code_[\\w]+)\">").get();
             String magnetLink = selectable.xpath("//*[@id=\"" + magnetCssId + "\"]/ol/li/text()").get();
-            page.putField("magnetLink", magnetLink);
+            page.putField("magnetLink", List.of(magnetLink));
         });
         // 种子文件
-        String torrentDownloadUrl = html.xpath("//p[@class=\"attnm\"]/a/@href").get();
+        String torrentUrl = html.xpath("//p[@class=\"attnm\"]/a/@href").get();
         String torrentFilename = html.xpath("//p[@class=\"attnm\"]/a/text()").get();
-        page.putField("torrentDownloadUrl", torrentDownloadUrl);
+        page.putField("torrentUrl", torrentUrl);
         // 下载种子文件
-        if (StrUtil.isNotEmpty(torrentDownloadUrl) && torrentDownloadUrl.startsWith("http")) {
+        if (StrUtil.isNotEmpty(torrentUrl) && torrentUrl.startsWith("http")) {
             Request request = new Request();
             request.setMethod(HttpMethod.GET.name());
-            request.setUrl(torrentDownloadUrl);
+            request.setUrl(torrentUrl);
             // 关联番号
             request.setExtras(Map.of("filename", torrentFilename,
                     "movieNumber", movieNumber));

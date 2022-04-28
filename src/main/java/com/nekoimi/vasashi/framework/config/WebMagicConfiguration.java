@@ -48,7 +48,6 @@ public class WebMagicConfiguration {
                                            Scheduler scheduler,
                                            Downloader downloader) {
         return new SeHuaTangRunner(properties.getSite().get("sehuatang"), scheduler, downloader, (resultItems, task) -> {
-            log.debug("name: {}", task.getUUID());
             Map<String, Object> map = resultItems.getAll();
             map.forEach((k, v) -> log.debug("{} -> {}", k, v));
         });
