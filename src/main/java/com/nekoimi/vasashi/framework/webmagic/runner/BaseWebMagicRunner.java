@@ -57,7 +57,7 @@ public abstract class BaseWebMagicRunner implements WebMagicRunner {
     }
 
     protected int threadNum() {
-        return siteProperties.getPoolSize();
+        return siteProperties.getThreadSize();
     }
 
     protected Site site() {

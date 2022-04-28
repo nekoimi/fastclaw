@@ -3,6 +3,6 @@ webmagic:
     sehuatang:
       name: SeHuaTang
       host: https://xzcfdfsafd.co
-      pool-size: 4
+      thread-size: 4
       extras:
         torrent-file-save-path: C:/Users/nekoimi/Downloads/tmp/torrent-file

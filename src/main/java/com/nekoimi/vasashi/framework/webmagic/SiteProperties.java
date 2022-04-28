@@ -17,7 +17,7 @@ import lombok.*;
 public class SiteProperties {
     private String name;
     private String host;
-    private Integer poolSize = 1;
+    private Integer threadSize = 1;
     private Dict extras = Dict.create();
 
     public void setName(String name) {
@@ -28,9 +28,9 @@ public class SiteProperties {
         this.host = StrUtil.removeSuffix(host, "/") + "/";
     }
 
-    public void setPoolSize(Integer poolSize) {
-        this.poolSize = poolSize == null ? 1 : (
-                poolSize <= 0 ? 1 : poolSize
+    public void setThreadSize(Integer threadSize) {
+        this.threadSize = threadSize == null ? 1 : (
+                threadSize <= 0 ? 1 : threadSize
         );
     }
 }

@@ -1,0 +1,20 @@
+{
+  "announce": "https://torrent.ubuntu.com/announce",
+  "announce-list": [
+    [
+      "https://torrent.ubuntu.com/announce"
+    ],
+    [
+      "https://ipv6.torrent.ubuntu.com/announce"
+    ]
+  ],
+  "comment": "Ubuntu CD releases.ubuntu.com",
+  "created by": "mktorrent 1.1",
+  "creation date": 1603385085,
+  "info": {
+    "length": 2942003200,
+    "name": "ubuntu-20.10-desktop-amd64.iso",
+    "piece length": 262144,
+    "pieces": null
+  }
+}
