@@ -8,6 +8,7 @@ import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.downloader.Downloader;
 import us.codecraft.webmagic.pipeline.Pipeline;
+import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.scheduler.Scheduler;
 
 import java.nio.charset.StandardCharsets;
@@ -31,10 +32,7 @@ public abstract class WebMagicRunner implements IWebMagicRunner {
         this.scheduler = scheduler;
         this.downloader = downloader;
         this.pipeline = pipeline;
-
-        PageContext context = PageContext.of(host(), siteProperties);
-        PageProcessorProvider provider = PageProcessorProvider.of(context, site(), processors());
-        this.spider = Spider.create(provider)
+        this.spider = Spider.create(createPageProcessor())
                 .setUUID(name())
                 .setScheduler(scheduler)
                 .setDownloader(downloader)
@@ -70,6 +68,12 @@ public abstract class WebMagicRunner implements IWebMagicRunner {
                 // 设置循环重试次数
                 .setCycleRetryTimes(3)
                 .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36");
+    }
+
+    protected PageProcessor createPageProcessor() {
+        PageContext context = PageContext.of(host(), siteProperties);
+        PageProcessorProvider provider = PageProcessorProvider.of(context, site(), processors());
+        return provider;
     }
 
     protected abstract List<String> startUrls();
