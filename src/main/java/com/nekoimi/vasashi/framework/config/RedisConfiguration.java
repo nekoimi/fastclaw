@@ -119,25 +119,26 @@ public class RedisConfiguration {
      */
     @Bean
     @ConditionalOnBean(RedisMessageListener.class)
-    public ReactiveRedisMessageListenerContainer reactiveRedisMessageListenerContainer(ReactiveRedisConnectionFactory connectionFactory,
-                                                                                       ObjectMapper objectMapper,
-                                                                                       ObjectProvider<List<RedisMessageListener>> objectProvider,
-                                                                                       @Qualifier("redisMessageThreadPoolTaskExecutor") ThreadPoolTaskExecutor threadPoolTaskExecutor) {
+    public ReactiveRedisMessageListenerContainer reactiveRedisMessageListenerContainer(
+            ObjectMapper objectMapper,
+            ReactiveRedisConnectionFactory connectionFactory,
+            ObjectProvider<List<RedisMessageListener>> objectProvider,
+            @Qualifier("redisMessageThreadPoolTaskExecutor") ThreadPoolTaskExecutor threadPoolTaskExecutor) {
         ReactiveRedisMessageListenerContainer container = new ReactiveRedisMessageListenerContainer(connectionFactory);
-        List<RedisMessageListener> redisMessageListeners = objectProvider.getIfAvailable();
-        if (redisMessageListeners != null && !redisMessageListeners.isEmpty()) {
-            for (RedisMessageListener listener : redisMessageListeners) {
-                List<ChannelTopic> topics = ListUtil.of(ChannelTopic.of(listener.message().topic()));
-                RedisSerializationContext.SerializationPair<String> channelSerializer = RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string());
-                Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(listener.messageType());
-                jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
-                RedisSerializationContext.SerializationPair<?> messageSerializer = RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer);
-                container.receive(topics, channelSerializer, messageSerializer)
-                        .publishOn(Schedulers.fromExecutor(threadPoolTaskExecutor))
-                        .subscribeOn(Schedulers.fromExecutor(threadPoolTaskExecutor))
-                        .subscribe((Consumer<ReactiveSubscription.Message<String, ?>>) message ->
-                                listener.handleMessage(message.getMessage(), message.getChannel()));
-            }
+        List<RedisMessageListener> redisMessageListeners = Optional.ofNullable(objectProvider.getIfAvailable()).orElse(List.of());
+        for (RedisMessageListener listener : redisMessageListeners) {
+            List<ChannelTopic> topics = ListUtil.of(ChannelTopic.of(listener.message().topic()));
+            RedisSerializationContext.SerializationPair<String> channelSerializer = RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string());
+            Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(listener.messageType());
+            jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
+            RedisSerializationContext.SerializationPair<?> messageSerializer = RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer);
+            container.receive(topics, channelSerializer, messageSerializer)
+                    .publishOn(Schedulers.fromExecutor(threadPoolTaskExecutor))
+                    .subscribeOn(Schedulers.fromExecutor(threadPoolTaskExecutor))
+                    .subscribe((Consumer<ReactiveSubscription.Message<String, ?>>) message -> {
+                        log.debug("message: {}", message);
+                        listener.handleMessage(message.getMessage(), message.getChannel());
+                    });
         }
         return container;
     }

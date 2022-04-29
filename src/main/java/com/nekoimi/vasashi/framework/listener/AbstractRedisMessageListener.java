@@ -21,12 +21,12 @@ public abstract class AbstractRedisMessageListener<T> implements RedisMessageLis
     @Override
     public void handleMessage(T message, String topic) {
         try {
-            logger.debug("RedisMessage [{}] 开始执行: START {}", topic, message);
+            logger.debug("MQ [{}] 开始执行: START {}", topic, message);
             doHandleMessage(message, topic);
-            logger.debug("RedisMessage [{}] 执行完毕: OK", topic);
+            logger.debug("MQ [{}] 执行完毕: OK", topic);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            logger.error("RedisMessage [{}] 执行完毕: ERROR, {}", topic, e.getMessage());
+            logger.error("MQ [{}] 执行完毕: ERROR, {}", topic, e.getMessage());
         }
     }
 
