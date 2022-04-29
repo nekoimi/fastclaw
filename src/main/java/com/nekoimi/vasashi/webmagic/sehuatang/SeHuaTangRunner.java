@@ -4,6 +4,8 @@ import cn.hutool.core.collection.ListUtil;
 import com.nekoimi.vasashi.framework.webmagic.SiteProperties;
 import com.nekoimi.vasashi.framework.webmagic.processor.IPageProcessor;
 import com.nekoimi.vasashi.framework.webmagic.runner.BaseWebMagicRunner;
+import com.nekoimi.vasashi.webmagic.sehuatang.CNDetailsPageProcessor;
+import com.nekoimi.vasashi.webmagic.sehuatang.CNListPageProcessor;
 import us.codecraft.webmagic.downloader.Downloader;
 import us.codecraft.webmagic.pipeline.Pipeline;
 import us.codecraft.webmagic.scheduler.Scheduler;

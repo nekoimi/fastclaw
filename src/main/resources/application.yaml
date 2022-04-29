@@ -24,7 +24,8 @@ spring:
   flyway:
     enabled: true
     table: migrations
-    locations: classpath:migrations
+    locations:
+      - classpath:migrations/v1
     baseline-on-migrate: true
     sql-migration-prefix: v
     repeatable-sql-migration-prefix: repeat
