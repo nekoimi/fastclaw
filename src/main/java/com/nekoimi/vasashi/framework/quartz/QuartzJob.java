@@ -1,8 +1,8 @@
 package com.nekoimi.vasashi.framework.quartz;
 
+import cn.hutool.core.util.ClassUtil;
 import com.nekoimi.vasashi.framework.utils.LocalDateTimeUtils;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
@@ -12,21 +12,29 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
  *
  * @author nekoimi 2022/4/26
  */
-public abstract class QuartzJob extends QuartzJobBean {
+public abstract class QuartzJob extends QuartzJobBean implements JobTrigger {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
+
+    /**
+     * <p>Cron表达式</p>
+     *
+     * @return
+     */
+    protected abstract String cronExpression();
 
     /**
      * <p>执行Job</p>
      *
-     * @param jobContext Job上下文
+     * @param dataMap Job上下文数据
      */
-    abstract protected void doExecute(JobExecutionContext jobContext);
+    protected abstract void doExecute(JobDataMap dataMap);
 
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         try {
             logger.info("QuartzJob[{}] - START {}", getClass(), LocalDateTimeUtils.now());
-            doExecute(context);
+            JobDataMap dataMap = context.getJobDetail().getJobDataMap();
+            doExecute(dataMap);
             logger.info("QuartzJob[{}] - END {}", getClass(), LocalDateTimeUtils.now());
         } catch (Exception e) {
             logger.info("QuartzJob[{}] - ERROR: {}", getClass(), e.getMessage());
@@ -46,6 +54,23 @@ public abstract class QuartzJob extends QuartzJobBean {
         }
     }
 
+    @Override
+    public JobDetail jobDetail() {
+        JobBuilder jobBuilder = JobBuilder.newJob();
+        jobBuilder.ofType(getClass());
+        jobBuilder.withIdentity(jobKey());
+        jobBuilder.usingJobData(jobDataMap());
+        return jobBuilder.build();
+    }
+
+    @Override
+    public Trigger trigger() {
+        TriggerBuilder<Trigger> triggerBuilder = TriggerBuilder.newTrigger();
+        triggerBuilder.withIdentity(jobKey()).startNow();
+        triggerBuilder.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression()));
+        return triggerBuilder.build();
+    }
+
     /**
      * <p>遇到异常是否重试</p>
      *
@@ -53,5 +78,23 @@ public abstract class QuartzJob extends QuartzJobBean {
      */
     protected boolean onExceptionRetry() {
         return false;
+    }
+
+    /**
+     * <p>Job Key</p>
+     *
+     * @return
+     */
+    protected String jobKey() {
+        return ClassUtil.getClassName(getClass(), true);
+    }
+
+    /**
+     * <p>上下文数据</p>
+     *
+     * @return
+     */
+    protected JobDataMap jobDataMap() {
+        return new JobDataMap();
     }
 }

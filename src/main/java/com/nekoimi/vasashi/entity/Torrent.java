@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 /**
- * User Entity
+ * Torrent Entity
  *
  * nekoimi  2022-04-29
  */
@@ -17,17 +17,17 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Builder(builderMethodName = "create")
-@ApiModel(description = "账号信息")
-@TableName(value = "library.sys_user", autoResultMap = true)
-public class User extends BaseEntity {
+@ApiModel(description = "书籍种子文件")
+@TableName(value = "library.book_torrent", autoResultMap = true)
+public class Torrent extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    // 账号
-    public static final String FIELD_USERNAME = "username";
-    // 密码
-    public static final String FIELD_PASSWORD = "password";
-    // 是否被禁用：0 - 禁用，1 - 正常
-    public static final String FIELD_ENABLE = "enable";
+    // 书籍ID
+    public static final String FIELD_BOOK_ID = "book_id";
+    // 种子文件链接
+    public static final String FIELD_URL = "url";
+    // 种子文件ID
+    public static final String FIELD_FILE_ID = "file_id";
 
     /**
      * ===================================================
@@ -36,16 +36,16 @@ public class User extends BaseEntity {
      */
 
     @TableField
-    @ApiModelProperty(value = "账号")
-    private String username;
+    @ApiModelProperty(value = "书籍ID")
+    private String bookId;
 
     @TableField
-    @ApiModelProperty(value = "密码")
-    private String password;
+    @ApiModelProperty(value = "种子文件链接")
+    private String url;
 
     @TableField
-    @ApiModelProperty(value = "是否被禁用：0 - 禁用，1 - 正常")
-    private Integer enable;
+    @ApiModelProperty(value = "种子文件ID")
+    private String fileId;
 
     /**
      * ===================================================

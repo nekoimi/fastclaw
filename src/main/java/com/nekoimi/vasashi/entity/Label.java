@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 /**
- * User Entity
+ * Label Entity
  *
  * nekoimi  2022-04-29
  */
@@ -17,17 +17,13 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Builder(builderMethodName = "create")
-@ApiModel(description = "账号信息")
-@TableName(value = "library.sys_user", autoResultMap = true)
-public class User extends BaseEntity {
+@ApiModel(description = "书籍标签信息")
+@TableName(value = "library.book_label", autoResultMap = true)
+public class Label extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    // 账号
-    public static final String FIELD_USERNAME = "username";
-    // 密码
-    public static final String FIELD_PASSWORD = "password";
-    // 是否被禁用：0 - 禁用，1 - 正常
-    public static final String FIELD_ENABLE = "enable";
+    // 书籍标签名称
+    public static final String FIELD_NAME = "name";
 
     /**
      * ===================================================
@@ -36,16 +32,8 @@ public class User extends BaseEntity {
      */
 
     @TableField
-    @ApiModelProperty(value = "账号")
-    private String username;
-
-    @TableField
-    @ApiModelProperty(value = "密码")
-    private String password;
-
-    @TableField
-    @ApiModelProperty(value = "是否被禁用：0 - 禁用，1 - 正常")
-    private Integer enable;
+    @ApiModelProperty(value = "书籍标签名称")
+    private String name;
 
     /**
      * ===================================================

@@ -10,13 +10,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.net.Inet4Address;
 
 @Slf4j
-//@EnableQuartz
 @EnableWebMagic
-//@EnableSecurityAccess
+@EnableScheduling
 @SpringBootApplication
 public class StartApplication {
 

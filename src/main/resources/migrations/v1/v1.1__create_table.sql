@@ -1,5 +1,3 @@
-CREATE SCHEMA IF NOT EXISTS library;
-
 CREATE TABLE IF NOT EXISTS library.book_actress
 (
     id         varchar(32) primary key not null,

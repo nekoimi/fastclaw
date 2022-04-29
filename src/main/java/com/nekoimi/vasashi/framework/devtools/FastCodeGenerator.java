@@ -13,6 +13,7 @@ import lombok.Getter;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -30,7 +31,9 @@ public class FastCodeGenerator {
     private final Consumer<TemplateConfig.Builder> templateConsumer;
 
     public void execute() {
-        FastAutoGenerator.create(new DataSourceConfig.Builder(dataSource).schema(schemaName))
+        FastAutoGenerator.create(new DataSourceConfig
+                .Builder(dataSource)
+                .schema(schemaName))
                 .globalConfig(builder -> {
                     builder.author("devtools") // 设置作者
                             .disableOpenDir()
@@ -66,7 +69,8 @@ public class FastCodeGenerator {
                         .mapperXml("devtools/mapper.xml")
                         .service("devtools/service.java")
                         .serviceImpl("devtools/serviceImpl.java"))
-                .templateConfig(templateConsumer)
+                .templateConfig(Optional.ofNullable(templateConsumer).orElse(builder -> {
+                }))
                 .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();
     }

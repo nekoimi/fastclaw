@@ -1,6 +1,7 @@
 package com.nekoimi.vasashi.framework.annotations;
 
 import com.nekoimi.vasashi.framework.config.QuartzConfiguration;
+import org.springframework.boot.autoconfigure.quartz.QuartzAutoConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -16,6 +17,9 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Documented
 @Order(Ordered.LOWEST_PRECEDENCE - 100)
-@Import(QuartzConfiguration.class)
+@Import({
+        QuartzConfiguration.class,
+        QuartzAutoConfiguration.class
+})
 public @interface EnableQuartz {
 }

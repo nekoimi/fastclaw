@@ -1,8 +1,7 @@
 package com.nekoimi.vasashi.framework.runner;
 
 import com.nekoimi.vasashi.framework.holder.ContextHolder;
-import com.nekoimi.vasashi.framework.quartz.HelloWorldJob;
-import org.quartz.*;
+import org.quartz.Scheduler;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 
@@ -17,14 +16,6 @@ public class QuartzJobRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         ApplicationContext context = ContextHolder.getInstance();
         Scheduler scheduler = context.getBean(Scheduler.class);
-        // Hello World
-        JobDetail jobDetail = JobBuilder.newJob(HelloWorldJob.class).build();
-        Trigger trigger = TriggerBuilder.newTrigger()
-                .withIdentity("helloworld1", "group1")
-                .startNow() // 立即生效
-                .withSchedule(CronScheduleBuilder.cronSchedule("0/5 * * * * ? *"))
-                .build();
-        scheduler.scheduleJob(jobDetail, trigger);
         scheduler.startDelayed(10);
     }
 }

@@ -18,7 +18,7 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 @Builder(builderMethodName = "create")
 @ApiModel(description = "用户信息")
-@TableName(value = "public.sys_user_info", autoResultMap = true)
+@TableName(value = "library.sys_user_info", autoResultMap = true)
 public class UserInfo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

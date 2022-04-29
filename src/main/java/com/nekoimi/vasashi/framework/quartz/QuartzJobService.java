@@ -15,4 +15,9 @@ public interface QuartzJobService {
      * @return
      */
     Scheduler getScheduler();
+
+    /**
+     * <p>scheduleJob</p>
+     */
+    void scheduleJob(JobTrigger jobTrigger);
 }

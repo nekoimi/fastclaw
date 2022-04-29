@@ -18,7 +18,7 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 @Builder(builderMethodName = "create")
 @ApiModel(description = "文件信息表")
-@TableName(value = "public.sys_file_info", autoResultMap = true)
+@TableName(value = "library.sys_file_info", autoResultMap = true)
 public class FileInfo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
