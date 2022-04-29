@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS sys_user_info
     updated_at timestamp               null,
     deleted    smallint                null,
 
+    user_id    varchar(32)             null default null,
     nickname   varchar(255)            null default null,
     avatar     varchar(255)            null default null
 );
@@ -65,5 +66,6 @@ COMMENT ON COLUMN sys_user_info.created_at IS '创建时间';
 COMMENT ON COLUMN sys_user_info.updated_at IS '最后更新时间';
 COMMENT ON COLUMN sys_user_info.deleted IS '软删除字段；1 - 已删除，0 - 未删除';
 
+COMMENT ON COLUMN sys_user_info.user_id IS '账号ID';
 COMMENT ON COLUMN sys_user_info.nickname IS '昵称';
 COMMENT ON COLUMN sys_user_info.avatar IS '头像';
