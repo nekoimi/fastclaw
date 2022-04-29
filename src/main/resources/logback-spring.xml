@@ -43,7 +43,7 @@
         </filter>
     </appender>
 
-    <logger name="com.nekoimi.vasashi" level="info"/>
+    <logger name="com.nekoimi.fastclaw" level="info"/>
     <logger name="org.springframework.http" level="info"/>
     <logger name="com.baomidou.mybatisplus" level="info"/>
     <logger name="org.flywaydb.core" level="info"/>
@@ -77,7 +77,7 @@
         <root level="debug">
             <appender-ref ref="console"/>
         </root>
-        <logger name="com.nekoimi.vasashi" level="debug"/>
+        <logger name="com.nekoimi.fastclaw" level="debug"/>
         <logger name="org.springframework.http" level="debug"/>
         <logger name="com.baomidou.mybatisplus" level="debug"/>
     </springProfile>

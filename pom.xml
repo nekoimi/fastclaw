@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.nekoimi</groupId>
-    <artifactId>vasashi</artifactId>
+    <artifactId>fastclaw</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
-    <name>vasashi</name>
-    <description>vasashi</description>
+    <name>fastclaw</name>
+    <description>fastclaw</description>
 
     <properties>
         <encoding>UTF-8</encoding>
@@ -281,7 +281,7 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${spring-boot.version}</version>
                     <configuration>
-                        <mainClass>com.nekoimi.vasashi.StartApplication</mainClass>
+                        <mainClass>com.nekoimi.fastclaw.StartApplication</mainClass>
                         <excludes>
                             <exclude>
                                 <groupId>org.springframework.boot</groupId>

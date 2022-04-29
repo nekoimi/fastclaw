@@ -85,8 +85,8 @@ mybatis-plus:
   configuration:
     default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
   check-config-location: true
-  # type-enums-package: com.nekoimi.standalone.enums
-  mapper-locations: classpath*:com/nekoimi/standalone/mapper/xml/**.xml
+  # type-enums-package: com.nekoimi.fastclaw.enums
+  mapper-locations: classpath*:com/nekoimi/fastclaw/mapper/xml/**.xml
 app:
   app-key: 123456
   web:

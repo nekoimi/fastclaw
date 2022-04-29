@@ -2,7 +2,7 @@ package ${package.Entity};
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.nekoimi.vasashi.framework.mybatis.BaseEntity;
+import com.nekoimi.fastclaw.framework.mybatis.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;

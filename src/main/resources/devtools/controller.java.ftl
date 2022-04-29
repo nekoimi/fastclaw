@@ -1,8 +1,8 @@
 package ${package.Controller};
 
 import ${package.Entity}.${entity};
-import com.nekoimi.vasashi.framework.web.PageReq;
-import com.nekoimi.vasashi.framework.web.PageResult;
+import com.nekoimi.fastclaw.framework.web.PageReq;
+import com.nekoimi.fastclaw.framework.web.PageResult;
 import ${package.Service}.${table.serviceName};
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
