@@ -1,4 +1,4 @@
-package com.nekoimi.vasashi.mq;
+package com.nekoimi.vasashi.mq.listener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

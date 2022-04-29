@@ -1,18 +1,18 @@
 package com.nekoimi.vasashi.mq;
 
-import com.nekoimi.vasashi.framework.contract.IMessageTopic;
+import com.nekoimi.vasashi.framework.contract.MessageTopic;
 
 /**
  * <p>EMessageTopic</p>
  *
  * @author nekoimi 2022/4/29
  */
-public enum MessageTopic implements IMessageTopic {
+public enum Topic implements MessageTopic {
     HELLO_WORLD("HELLO-WORLD");
 
     private final String name;
 
-    MessageTopic(String name) {
+    Topic(String name) {
         this.name = name;
     }
 

@@ -13,7 +13,7 @@ public interface RedisMessageListener<T> {
      * 消息主题
      * @return
      */
-    IMessageTopic message();
+    MessageTopic message();
 
     /**
      * 消息类型
