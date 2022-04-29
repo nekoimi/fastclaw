@@ -1,9 +1,8 @@
 package com.nekoimi.vasashi.job;
 
-import com.nekoimi.vasashi.mq.MessageTopic;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -15,16 +14,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class HelloWorldJob {
-    private static int num = 0;
-    @Autowired
-    private ReactiveRedisTemplate<String, Object> redisTemplate;
+    @Autowired private RabbitTemplate rabbitTemplate;
 
     @Scheduled(cron = "*/1 * * * * *")
     public void hello2() {
-        if (num <= 10) {
-            log.info(">>>>>>>>>>>> Hello World, {}", System.currentTimeMillis());
-            redisTemplate.convertAndSend(MessageTopic.HELLO_WORLD.topic(), "Hello World, " + System.currentTimeMillis()).subscribe();
-            num++;
-        }
+        rabbitTemplate.convertAndSend("test-queue", "Hello World, " + System.currentTimeMillis());
     }
 }
