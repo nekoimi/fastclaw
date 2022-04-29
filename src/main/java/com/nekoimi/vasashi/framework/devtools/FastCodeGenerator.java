@@ -1,36 +1,49 @@
 package com.nekoimi.vasashi.framework.devtools;
 
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
+import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
+import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.nekoimi.vasashi.framework.mybatis.BaseEntity;
 import com.nekoimi.vasashi.framework.mybatis.BaseMapper;
-import com.nekoimi.vasashi.framework.mybatis.ReactiveICrudService;
 import com.nekoimi.vasashi.framework.mybatis.ReactiveCrudService;
-import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.stereotype.Service;
+import com.nekoimi.vasashi.framework.mybatis.ReactiveICrudService;
+import lombok.Builder;
+import lombok.Getter;
+
+import javax.sql.DataSource;
+import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * nekoimi  2022/2/17 10:59
  */
-@Service
-@AllArgsConstructor
+@Getter
+@Builder(builderMethodName = "of")
 public class FastCodeGenerator {
-    private final DataSourceProperties properties;
+    private final String outputDir;
+    private final String packageName;
+    private final String schemaName;
+    private final List<String> tableName;
+    private final String tablePrefix;
+    private final DataSource dataSource;
+    private final Consumer<TemplateConfig.Builder> templateConsumer;
 
-    public void execute(String outputDir, String tableName, String...tablePrefix) {
-        FastAutoGenerator.create(properties.getUrl(), properties.getUsername(), properties.getPassword())
+    public void execute() {
+        FastAutoGenerator.create(new DataSourceConfig.Builder(dataSource).schema(schemaName))
                 .globalConfig(builder -> {
                     builder.author("devtools") // 设置作者
                             .disableOpenDir()
+                            .fileOverride()
                             .enableSwagger() // 开启 swagger 模式
                             .outputDir(outputDir); // 指定输出目录
                 })
                 .packageConfig(builder -> {
-                    builder.parent("com.nekoimi.standalone"); // 设置父包名
+                    builder.parent(packageName); // 设置父包名
                 })
                 .strategyConfig(builder -> {
                     builder.addInclude(tableName)
+                            .enableSchema()
                             .addTablePrefix(tablePrefix)
                             .entityBuilder()
                             .addSuperEntityColumns("id", "created_at", "updated_at", "deleted")
@@ -53,6 +66,7 @@ public class FastCodeGenerator {
                         .mapperXml("devtools/mapper.xml")
                         .service("devtools/service.java")
                         .serviceImpl("devtools/serviceImpl.java"))
+                .templateConfig(templateConsumer)
                 .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();
     }

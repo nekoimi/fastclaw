@@ -8,28 +8,26 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 /**
- * FileInfo Entity
+ * UserInfo Entity
  *
- * nekoimi  2022-04-26
+ * nekoimi  2022-04-29
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Builder(builderMethodName = "create")
-@ApiModel(description = "文件信息表")
-@TableName(value = "public.sys_file_info", autoResultMap = true)
-public class FileInfo extends BaseEntity {
+@ApiModel(description = "用户信息")
+@TableName(value = "public.sys_user_info", autoResultMap = true)
+public class UserInfo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    // 文件名称
-    public static final String FIELD_FILENAME = "filename";
-    // 文件大小
-    public static final String FIELD_FILE_SIZE = "file_size";
-    // 文件类型
-    public static final String FIELD_MIME_TYPE = "mime_type";
-    // 相对路径
-    public static final String FIELD_RELATIVE_PATH = "relative_path";
+    // 账号ID
+    public static final String FIELD_USER_ID = "user_id";
+    // 昵称
+    public static final String FIELD_NICKNAME = "nickname";
+    // 头像
+    public static final String FIELD_AVATAR = "avatar";
 
     /**
      * ===================================================
@@ -38,20 +36,16 @@ public class FileInfo extends BaseEntity {
      */
 
     @TableField
-    @ApiModelProperty(value = "文件名称")
-    private String filename;
+    @ApiModelProperty(value = "账号ID")
+    private String userId;
 
     @TableField
-    @ApiModelProperty(value = "文件大小")
-    private Long fileSize;
+    @ApiModelProperty(value = "昵称")
+    private String nickname;
 
     @TableField
-    @ApiModelProperty(value = "文件类型")
-    private String mimeType;
-
-    @TableField
-    @ApiModelProperty(value = "相对路径")
-    private String relativePath;
+    @ApiModelProperty(value = "头像")
+    private String avatar;
 
     /**
      * ===================================================

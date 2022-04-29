@@ -18,7 +18,7 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 @Builder(builderMethodName = "create")
 @ApiModel(description = "${table.comment}")
-@TableName(value = "${table.name}", autoResultMap = true)
+@TableName(value = "${schemaName}${table.name}", autoResultMap = true)
 public class ${entity} extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
