@@ -1,7 +1,6 @@
 package com.nekoimi.vasashi.framework.config;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.quartz.QuartzAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,8 +11,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableAutoConfiguration(exclude = {
-        ReactiveSecurityAutoConfiguration.class,
-        QuartzAutoConfiguration.class
+        ReactiveSecurityAutoConfiguration.class
 })
 public class AppExcludeConfiguration {
 }
