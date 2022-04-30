@@ -1,17 +1,11 @@
 package com.nekoimi.fastclaw.framework.config;
 
-import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.StrUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nekoimi.fastclaw.framework.config.properties.AppProperties;
-import com.nekoimi.fastclaw.framework.contract.RedisMessageListener;
 import com.nekoimi.fastclaw.framework.utils.RedisTemplateBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -20,21 +14,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
-import org.springframework.data.redis.connection.ReactiveSubscription;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.*;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.ReactiveRedisMessageListenerContainer;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializationContext;
-import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -89,58 +73,6 @@ public class RedisConfiguration {
                 .cacheDefaults(RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(1)))
                 .withInitialCacheConfigurations(configurationMap)
                 .build();
-    }
-
-    /**
-     * 消息处理线程池
-     *
-     * @return
-     */
-    @Bean(name = "redisMessageThreadPoolTaskExecutor", destroyMethod = "shutdown")
-    public ThreadPoolTaskExecutor redisMessageThreadPoolTaskExecutor() {
-        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setCorePoolSize(4);
-        taskExecutor.setMaxPoolSize(8);
-        taskExecutor.setKeepAliveSeconds(60);
-        taskExecutor.setQueueCapacity(1024);
-        taskExecutor.setThreadNamePrefix("redis-mq-");
-        taskExecutor.initialize();
-        return taskExecutor;
-    }
-
-    /**
-     * <p>配置redis的消息订阅</p>
-     *
-     * @param connectionFactory
-     * @param objectMapper
-     * @param objectProvider
-     * @param threadPoolTaskExecutor
-     * @return
-     */
-    @Bean
-    @ConditionalOnBean(RedisMessageListener.class)
-    public ReactiveRedisMessageListenerContainer reactiveRedisMessageListenerContainer(
-            ObjectMapper objectMapper,
-            ReactiveRedisConnectionFactory connectionFactory,
-            ObjectProvider<List<RedisMessageListener>> objectProvider,
-            @Qualifier("redisMessageThreadPoolTaskExecutor") ThreadPoolTaskExecutor threadPoolTaskExecutor) {
-        ReactiveRedisMessageListenerContainer container = new ReactiveRedisMessageListenerContainer(connectionFactory);
-        List<RedisMessageListener> redisMessageListeners = Optional.ofNullable(objectProvider.getIfAvailable()).orElse(List.of());
-        for (RedisMessageListener listener : redisMessageListeners) {
-            List<ChannelTopic> topics = ListUtil.of(ChannelTopic.of(listener.message().topic()));
-            RedisSerializationContext.SerializationPair<String> channelSerializer = RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string());
-            Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(listener.messageType());
-            jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
-            RedisSerializationContext.SerializationPair<?> messageSerializer = RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer);
-            container.receive(topics, channelSerializer, messageSerializer)
-                    .publishOn(Schedulers.fromExecutor(threadPoolTaskExecutor))
-                    .subscribeOn(Schedulers.fromExecutor(threadPoolTaskExecutor))
-                    .subscribe((Consumer<ReactiveSubscription.Message<String, ?>>) message -> {
-                        log.debug("message: {}", message);
-                        listener.handleMessage(message.getMessage(), message.getChannel());
-                    });
-        }
-        return container;
     }
 
     /**
