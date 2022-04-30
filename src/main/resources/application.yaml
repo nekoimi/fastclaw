@@ -117,9 +117,9 @@ app:
       - /user/list
   storage:
     # 配置后端服务访问的主机地址
-    host:
+    host: http://127.0.0.1:8080
     # 配置本地文件保存的文件夹路径（绝对路径）
-    local-path: C:/Users/nekoimi/Downloads/tmp/nk-standalone-framework
+    local-path: C:/Users/nekoimi/Downloads/tmp/fastclaw
     # 静态文件下载
     static-map:
       test: static/test.txt

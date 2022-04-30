@@ -1,9 +1,10 @@
-
 webmagic:
   site:
     sehuatang:
       name: SeHuaTang
       host: https://xzcfdfsafd.co
       thread-size: 4
-      extras:
-        torrent-file-save-path: C:/Users/nekoimi/Downloads/tmp/torrent-file
+    javbooks:
+      name: JavBooks
+      host: https://bb2454.com
+      thread-size: 4

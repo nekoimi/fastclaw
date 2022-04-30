@@ -24,7 +24,7 @@ public class JavBook implements Serializable {
     private LocalDateTime updatedAt;
     private String originalUrl;
     private String movieNumber;
-    private String actress;
+    private List<String> actressList;
     private String series;
     private String duration;
     private String manufacturer;
@@ -32,4 +32,5 @@ public class JavBook implements Serializable {
     private List<String> imageList;
     private List<String> magnetLink;
     private List<String> torrentUrl;
+    private List<String> labelList;
 }

@@ -18,8 +18,17 @@ public class WebMagicSpiderTests {
     @Autowired
     private WebMagicRunner seHuaTangRunner;
 
+    @Qualifier("javBooksRunner")
+    @Autowired
+    private WebMagicRunner javBooksRunner;
+
     @Test
     void runTest1() {
         seHuaTangRunner.start();
+    }
+
+    @Test
+    void runTests2() {
+        javBooksRunner.start();
     }
 }

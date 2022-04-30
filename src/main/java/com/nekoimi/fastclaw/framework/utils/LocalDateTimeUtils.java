@@ -63,4 +63,15 @@ public class LocalDateTimeUtils {
     public static LocalDateTime parse(String dateTime) {
         return LocalDateTime.parse(dateTime, DateTimeConstants.DEFAULT_DATE_TIME_FORMATTER);
     }
+
+    /**
+     * <p>解析日期</p>
+     *
+     * @param dateTime 日期字符串
+     * @return
+     */
+    public static LocalDateTime parseDate(String dateTime) {
+        LocalDate localDate = LocalDate.parse(dateTime, DateTimeConstants.DEFAULT_DATE_FORMATTER);
+        return localDate.atStartOfDay();
+    }
 }
