@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.nekoimi.fastclaw.framework.mybatis.BaseEntity;
 import com.nekoimi.fastclaw.framework.mybatis.BaseMapper;
 import com.nekoimi.fastclaw.framework.mybatis.ReactiveCrudService;
-import com.nekoimi.fastclaw.framework.mybatis.ReactiveICrudService;
+import com.nekoimi.fastclaw.framework.mybatis.IReactiveCrudService;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -57,7 +57,7 @@ public class FastCodeGenerator {
 
                             .serviceBuilder()
                             .formatServiceFileName("%sService")
-                            .superServiceClass(ReactiveICrudService.class)
+                            .superServiceClass(IReactiveCrudService.class)
 
                             .serviceBuilder()
                             .formatServiceImplFileName("%sServiceImpl")

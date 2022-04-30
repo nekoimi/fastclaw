@@ -34,7 +34,7 @@ import java.util.function.Consumer;
  * nekoimi  2021/6/13 上午12:03
  */
 @Slf4j
-public class ReactiveCrudService<M extends BaseMapper<E>, E> implements ReactiveICrudService<E> {
+public class ReactiveCrudService<M extends BaseMapper<E>, E> implements IReactiveCrudService<E> {
     @Autowired
     protected M mapper;
     @Autowired

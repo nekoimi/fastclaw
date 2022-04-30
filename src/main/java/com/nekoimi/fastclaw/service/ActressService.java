@@ -1,6 +1,6 @@
 package com.nekoimi.fastclaw.service;
 
-import com.nekoimi.fastclaw.framework.mybatis.ReactiveICrudService;
+import com.nekoimi.fastclaw.framework.mybatis.IReactiveCrudService;
 import com.nekoimi.fastclaw.entity.Actress;
 
 /**
@@ -8,5 +8,5 @@ import com.nekoimi.fastclaw.entity.Actress;
  *
  * nekoimi  2022-04-29
  */
-public interface ActressService extends ReactiveICrudService<Actress> {
+public interface ActressService extends IReactiveCrudService<Actress> {
 }

@@ -18,7 +18,7 @@ import java.util.function.Consumer;
  *
  * CRUD service interface
  */
-public interface ReactiveICrudService<E> {
+public interface IReactiveCrudService<E> {
     Class<E> getEntityClass();
     BaseMapper<E> getMapper();
     QMap<SFunction<E, Object>, Object> queryMap();

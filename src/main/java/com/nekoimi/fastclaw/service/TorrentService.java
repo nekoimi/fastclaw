@@ -1,6 +1,6 @@
 package com.nekoimi.fastclaw.service;
 
-import com.nekoimi.fastclaw.framework.mybatis.ReactiveICrudService;
+import com.nekoimi.fastclaw.framework.mybatis.IReactiveCrudService;
 import com.nekoimi.fastclaw.entity.Torrent;
 
 /**
@@ -8,5 +8,5 @@ import com.nekoimi.fastclaw.entity.Torrent;
  *
  * nekoimi  2022-04-29
  */
-public interface TorrentService extends ReactiveICrudService<Torrent> {
+public interface TorrentService extends IReactiveCrudService<Torrent> {
 }

@@ -1,6 +1,6 @@
 package com.nekoimi.fastclaw.service;
 
-import com.nekoimi.fastclaw.framework.mybatis.ReactiveICrudService;
+import com.nekoimi.fastclaw.framework.mybatis.IReactiveCrudService;
 import com.nekoimi.fastclaw.entity.LabelRel;
 
 /**
@@ -8,5 +8,5 @@ import com.nekoimi.fastclaw.entity.LabelRel;
  *
  * nekoimi  2022-04-29
  */
-public interface LabelRelService extends ReactiveICrudService<LabelRel> {
+public interface LabelRelService extends IReactiveCrudService<LabelRel> {
 }

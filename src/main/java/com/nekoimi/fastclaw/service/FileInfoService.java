@@ -1,6 +1,6 @@
 package com.nekoimi.fastclaw.service;
 
-import com.nekoimi.fastclaw.framework.mybatis.ReactiveICrudService;
+import com.nekoimi.fastclaw.framework.mybatis.IReactiveCrudService;
 import com.nekoimi.fastclaw.entity.FileInfo;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
  * <p>
  * nekoimi  2022-04-26
  */
-public interface FileInfoService extends ReactiveICrudService<FileInfo> {
+public interface FileInfoService extends IReactiveCrudService<FileInfo> {
 
     /**
      * <p>上传文件</p>
