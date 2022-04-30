@@ -1,16 +1,20 @@
 package com.nekoimi.fastclaw.webmagic.sehuatang;
 
 import cn.hutool.core.util.StrUtil;
+import com.nekoimi.fastclaw.framework.holder.ContextHolder;
 import com.nekoimi.fastclaw.framework.utils.LocalDateTimeUtils;
 import com.nekoimi.fastclaw.framework.webmagic.processor.IPageProcessor;
 import com.nekoimi.fastclaw.framework.webmagic.processor.PageContext;
+import com.nekoimi.fastclaw.mq.RabbitMessageService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.selector.Html;
 import us.codecraft.webmagic.selector.Selectable;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>CNDetailsPageProcessor</p>
@@ -19,6 +23,12 @@ import java.util.List;
  */
 @Slf4j
 public class CNDetailsPageProcessor implements IPageProcessor {
+    private final RabbitMessageService rabbitMessageService;
+
+    public CNDetailsPageProcessor() {
+        ApplicationContext context = ContextHolder.getInstance();
+        this.rabbitMessageService = (RabbitMessageService) context.getBean("downloadTorrentMessageService");
+    }
 
     @Override
     public boolean supports(Page page) {
@@ -78,17 +88,12 @@ public class CNDetailsPageProcessor implements IPageProcessor {
         // 种子文件
         String torrentUrl = html.xpath("//p[@class=\"attnm\"]/a/@href").get();
         page.putField("torrentUrl", List.of(torrentUrl));
-//        String torrentFilename = html.xpath("//p[@class=\"attnm\"]/a/text()").get();
-//        // 下载种子文件
-//        if (StrUtil.isNotEmpty(torrentUrl) && torrentUrl.startsWith("http")) {
-//            Request request = new Request();
-//            request.setMethod(HttpMethod.GET.name());
-//            request.setUrl(torrentUrl);
-//            // 关联番号
-//            request.setExtras(Map.of("filename", torrentFilename,
-//                    "movieNumber", movieNumber));
-//            page.addTargetRequest(request);
-//        }
+        String torrentFilename = html.xpath("//p[@class=\"attnm\"]/a/text()").get();
+        // 下载种子文件
+        if (StrUtil.isNotEmpty(torrentUrl) && torrentUrl.startsWith("http")) {
+            rabbitMessageService.send(Map.of("filename", torrentFilename,
+                    "movieNumber", movieNumber));
+        }
     }
 
     private String removeBlanks(String str) {
